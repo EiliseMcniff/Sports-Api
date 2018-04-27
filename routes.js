@@ -11,7 +11,7 @@ router.get("/",function(request,response){
 ////////////////////////////////////
 
 router.get("/requestNHL", function(req, res, next) {
-	sports.NHL.getActivePlayers( function (err, obj) {
+	sports.NHL.getNHLTeams( function (err, obj) {
     		if (err) {
         		return console.log('Error occurred active_players: ' + err);
     		}
@@ -20,9 +20,18 @@ console.log(result);
 		res.json({"info":obj});
 	});
 });
+/////////////////////////////////////////////////////
+router.get("/requestNHL/:name", function(req, res, next) {
+	sports.NHL.getNHLPlayer( req.query.firstname,req.query.lastname,function (err, obj) {
+    		if (err) {
+        		return console.log('Error occurred active_players: ' + err);
+    		}
+		res.json({"info":obj});
+	});
+});
 ////////////////////////////////////////////
 router.get("/requestNBA", function(req, res, next) {
-	sports.NBA.getActiveNBAPlayers( function (err, obj) {
+	sports.NBA.getNBATeams( function (err, obj) {s
     		if (err) {
         		return console.log('Error occurred active_players: ' + err);
     		}
