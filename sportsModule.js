@@ -7,7 +7,7 @@ var args = {
     port: '443',
     headers: { "User-Agent": "node " + process.version }
 };
-client.registerMethod("getActivePlayers", "https://www.mysportsfeeds.com/api/feed/pull/nhl/2015-2016-regular/active_players.json", "GET");
+client.registerMethod("getActivePlayers", "https://www.mysportsfeeds.com/api/feed/pull/nhl/2015-2016-regular/overall_team_standings.json", "GET");
 
 client.registerMethod("getActiveNBAPlayers", "https://www.mysportsfeeds.com/api/feed/pull/nba/2015-2016-regular/active_players.json", "GET");
 
@@ -37,22 +37,25 @@ module.exports["NBA"] = {
         obj.length = MAX_PLAYERS;
             fn(false, obj);
         });
-    }
-     getNBAPlayer: function ( name,fn) {
-        console.log(name)
-    client.methods.getActiveNBAPlayers(args, function (data, response) {
+    },
+     getNBAPlayer: function ( firstname,lastname,fn) {
+       client.methods.getActiveNBAPlayers(args, function (data, response) {
             if (response.statusCode !== 200) return fn(response.statusCode);
         var obj = data.activeplayers.playerentry;
         var returnObj;
         obj.forEach(function(users){
-            if(users.firstname = firstname)
+            if(users.player.FirstName.toLowerCase() == firstname.toLowerCase())
             {
+              if(users.player.LastName.toLowerCase() == lastname.toLowerCase())
+              {
 
+                  returnObj = users;
+              }
             }
+
         });
         obj.length = MAX_PLAYERS;
-            fn(false, obj);
+            fn(false, returnObj);
         });
     }
 }
-

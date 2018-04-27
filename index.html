@@ -9,8 +9,8 @@
     </style>
     <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
   </head>
-  
-  <body>  
+
+  <body>
     <div id="requestNHL">
       <input id="requestButton" type="button" value="RequestNHL" />
     </div>
@@ -19,28 +19,59 @@
       <input id="requestNBA" type="button" value="RequestNBA" />
     </div>
      <div id="requestNBAPlayer">
-      <input id="requestNBAPlayerFirst" type="text">First Name:</input>
-      <input id="requestNBAPlayerLast" type="text">Last Name:</input>
+      First Name:<input id="requestNBAPlayerFirst" type="text"></input>
+      Last Name:<input id="requestNBAPlayerLast" type="text"></input>
       <input id="requestNBAPlayerB" type="button" value="RequestNBAPlayer" />
     </div>
-  <ul id="list"></ul>   
+  <ul id="list"></ul>
+
+  <table id='sports' style='border:2px solid black'>
+  <tr id='ident'>
+    <th>Firstname</th>
+    <th>Lastname</th>
+    <th>Height</th>
+  </tr>
+</table>
+<table id='playerStats' style='border:2px solid black'>
+</table>
 
 
 
-    <script>   
-      function success(data) { 
-
-        $("#list").empty();
-
+    <script>
+      function success(data) {
+        $("#sports").empty();
         console.log(data.info);
-        console.log(data.info.length);
         for (let i=0;i<data.info.length;i++) {
-           
-           $("#list").append("<li>" + data.info[i].player.FirstName + " " + data.info[i].player.LastName + " " + data.info[i].player.Height + "</li>");
+
+
+           $("#sports").append("<tr><td>" + data.info[i].player.FirstName + "</td>"  +
+                               "<td>" + data.info[i].player.LastName + "</td>" +
+                               "<td>" + data.info[i].player.Height + "</td></tr>");
+
         }
-        
+
       }
-      
+      function difSuccess(data) {
+
+        $("#sports").empty();
+
+      console.log(data.info);
+
+
+        $("#playerStats").append("<tr><td>Firstname</td>"  +
+                            "<td>Lastname</td>" +
+                            "<td>Height</td>"+
+                            "<td>Age</td>"+
+                            "<td>Team</td>"+
+                            "<td>Position</td></tr>");
+         $("#playerStats").append("<tr><td>" + data.info.player.FirstName + "</td>"  +
+                             "<td>" + data.info.player.LastName + "</td>" +
+                             "<td>" + data.info.player.Height + "</td>"+
+                             "<td>" + data.info.player.Age + "</td>"+
+                             "<td>" + data.info.team.Name + "</td>" +
+                             "<td>" + data.info.player.Position + "</td></tr>");
+      }
+
       function requestClicked(){
 //send an HTTP get request and get a result back.
       $.get("/requestNHL", success);
@@ -55,19 +86,18 @@
 
        function requestNBAPlayerClicked(){
 //send an HTTP get request and get a result back.
-      $.get("/requestNBA/firstname=" + $("#requestNBAPlayerFirst").val() + "&lastname=" + $('#requestNBAPlayerLast').val() + "", success);
+      $.get("/requestNBA/firstname=" + $("#requestNBAPlayerFirst").val() + "&lastname=" + $('#requestNBAPlayerLast').val() + "",
+            {firstname:$("#requestNBAPlayerFirst").val(),lastname:$('#requestNBAPlayerLast').val()}, difSuccess);
         return false;
       }
-      
-      
-      $(document).ready(function(){        
+
+
+      $(document).ready(function(){
         $("#requestButton").click(requestClicked);
         $("#requestNBA").click(requestNBAClicked);
         $("#requestNBAPlayerB").click(requestNBAPlayerClicked);
-      });   
-    
-    </script>   
+      });
+
+    </script>
   </body>
-</html>  
-  
-  
+</html>

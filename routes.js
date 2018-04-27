@@ -33,14 +33,10 @@ console.log(result1);
 });
 //////////////////////////////////////////////////
 router.get("/requestNBA/:name", function(req, res, next) {
-	//console.log(req.params.name);
-	//console.log(req.query.name.firstname);
-	sports.NBA.getNBAPlayer( req.params.name,function (err, obj) {
+	sports.NBA.getNBAPlayer( req.query.firstname,req.query.lastname,function (err, obj) {
     		if (err) {
         		return console.log('Error occurred active_players: ' + err);
     		}
-var result2 = JSON.stringify(obj);
-console.log(result2);
 		res.json({"info":obj});
 	});
 });
