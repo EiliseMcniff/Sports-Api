@@ -100,7 +100,7 @@
                               "<td>Points</td></tr>");
            $("#playerStats").append("<tr><td>" + data.info.player.FirstName + "</td>"  +
                                "<td>" + data.info.team.Name + "</td>" +
-                               "<td>" + data.info.stats.Pts + "</td></tr>");
+                               "<td>" + data.info.stats.Pts['#text'] + "</td></tr>");
            }
       }
       function requestTeamSuccess(data) {
