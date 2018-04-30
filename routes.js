@@ -26,6 +26,16 @@ router.get("/requestNHL/:name", function(req, res, next) {
     		if (err) {
         		return console.log('Error occurred active_players: ' + err);
     		}
+    console.log(obj);
+		res.json({"info":obj});
+	});
+});
+router.get("/requestNHLStats/:name", function(req, res, next) {
+	sports.NHL.getNHLPlayerStats( req.query.firstname,req.query.lastname,function (err, obj) {
+    		if (err) {
+        		return console.log('Error occurred active_players: ' + err);
+    		}
+    console.log(obj);
 		res.json({"info":obj});
 	});
 });
@@ -55,6 +65,16 @@ router.get("/requestNBA/:name", function(req, res, next) {
     		if (err) {
         		return console.log('Error occurred active_players: ' + err);
     		}
+    console.log(obj);
+		res.json({"info":obj});
+	});
+});
+router.get("/requestNBAStats/:name", function(req, res, next) {
+	sports.NBA.getNBAPlayerStats( req.query.firstname,req.query.lastname,function (err, obj) {
+    		if (err) {
+        		return console.log('Error occurred active_players: ' + err);
+    		}
+    console.log(obj);
 		res.json({"info":obj});
 	});
 });
@@ -64,6 +84,7 @@ router.get("/requestNBATeam/:name", function(req, res, next) {
     		if (err) {
         		return console.log('Error occurred active_players: ' + err);
     		}
+        console.log(obj);
 		res.json({"info":obj});
 	});
 });

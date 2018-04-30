@@ -11,14 +11,19 @@ client.registerMethod("getNHLTeams",
 "https://www.mysportsfeeds.com/api/feed/pull/nhl/2015-2016-regular/overall_team_standings.json", "GET");
 
 client.registerMethod("getNHLPlayer",
+"https://www.mysportsfeeds.com/api/feed/pull/nhl/2015-2016-regular/cumulative_player_stats.json", "GET");
+
+client.registerMethod("getNHLPlayers",
 "https://www.mysportsfeeds.com/api/feed/pull/nhl/2015-2016-regular/active_players.json", "GET");
 
 client.registerMethod("getNBATeams",
 "https://www.mysportsfeeds.com/api/feed/pull/nba/2015-2016-regular/overall_team_standings.json", "GET");
 
 client.registerMethod("getNBAPlayer",
-"https://www.mysportsfeeds.com/api/feed/pull/nba/2015-2016-regular/active_players.json", "GET");
+"https://www.mysportsfeeds.com/api/feed/pull/nba/2015-2016-regular/cumulative_player_stats.json", "GET");
 
+client.registerMethod("getNBAPlayers",
+"https://www.mysportsfeeds.com/api/feed/pull/nba/2015-2016-regular/active_players.json", "GET");
 
 
 module.exports = function (username, password) {
@@ -37,10 +42,11 @@ module.exports["NHL"] = {
         });
     },
     getNHLPlayer: function ( firstname,lastname,fn) {
-      client.methods.getNHLPlayer(args, function (data, response) {
+      client.methods.getNHLPlayers(args, function (data, response) {
 
            if (response.statusCode !== 200) return fn(response.statusCode);
        var obj = data.activeplayers.playerentry;
+              obj.length = MAX_PLAYERS;
        var returnObj = undefined;
        obj.forEach(function(users){
          if(users.player)
@@ -56,9 +62,30 @@ module.exports["NHL"] = {
        });
           fn(false, returnObj);
      });
-   },
+   },getNHLPlayerStats: function ( firstname,lastname,fn) {
+     client.methods.getNHLPlayer(args, function (data, response) {
+
+          if (response.statusCode !== 200) return fn(response.statusCode);
+      var obj = data.cumulativeplayerstats.playerstatsentry;
+             obj.length = MAX_PLAYERS;
+      var returnObj = undefined;
+      obj.forEach(function(users){
+        if(users.player)
+        {
+          if(users.player.FirstName.toLowerCase() == firstname.toLowerCase())
+          {
+            if(users.player.LastName.toLowerCase() == lastname.toLowerCase())
+            {
+              returnObj = users;
+            }
+          }
+        }
+      });
+         fn(false, returnObj);
+    });
+  },
    getNHLPlayers: function ( teamname,fn) {
-         client.methods.getNHLPlayer(args, function (data, response) {
+         client.methods.getNHLPlayers(args, function (data, response) {
               if (response.statusCode !== 200) return fn(response.statusCode);
           var obj = data.activeplayers.playerentry;
 
@@ -75,7 +102,7 @@ module.exports["NHL"] = {
 
           });
           console.log(returnObject);
-    //   obj.length = MAX_PLAYERS;
+
 
            fn(false, returnObject);
        });
@@ -92,11 +119,43 @@ module.exports["NBA"] = {
         });
     },
      getNBAPlayer: function ( firstname,lastname,fn) {
-       client.methods.getNBAPlayer(args, function (data, response) {
+       client.methods.getNBAPlayers(args, function (data, response) {
             if (response.statusCode !== 200) return fn(response.statusCode);
+
         var obj = data.activeplayers.playerentry;
+         //obj.length = MAX_PLAYERS;
+      //  console.log(obj);
         var returnObj = undefined;
         obj.forEach(function(users){
+          console.log(users.player.FirstName);
+          console.log(users.player.LastName);
+          if(users.player){
+            if(users.player.FirstName.toLowerCase() == firstname.toLowerCase())
+            {
+              if(users.player.LastName.toLowerCase() == lastname.toLowerCase())
+              {
+
+                  returnObj = users;
+              }
+            }
+          }
+
+        });
+        obj.length = MAX_PLAYERS;
+            fn(false, returnObj);
+        });
+    },
+    getNBAPlayerStats: function ( firstname,lastname,fn) {
+       client.methods.getNBAPlayer(args, function (data, response) {
+            if (response.statusCode !== 200) return fn(response.statusCode);
+
+        var obj = data.cumulativeplayerstats.playerstatsentry;
+         //obj.length = MAX_PLAYERS;
+      //  console.log(obj);
+        var returnObj = undefined;
+        obj.forEach(function(users){
+          console.log(users.player.FirstName);
+          console.log(users.player.LastName);
           if(users.player){
             if(users.player.FirstName.toLowerCase() == firstname.toLowerCase())
             {
@@ -114,12 +173,12 @@ module.exports["NBA"] = {
         });
     },
      getNBAPlayers: function ( teamname,fn) {
-       client.methods.getNBAPlayer(args, function (data, response) {
+       client.methods.getNBAPlayers(args, function (data, response) {
             if (response.statusCode !== 200) return fn(response.statusCode);
         var obj = data.activeplayers.playerentry;
         var returnObject = [];
         obj.forEach(function(users){
-        //  console.log(users.team);
+          console.log(users.team);
           if(users.team)
           {
             if(users.team.Name.toLowerCase() == teamname.toLowerCase())

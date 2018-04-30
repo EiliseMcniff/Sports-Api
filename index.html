@@ -28,11 +28,13 @@
      First Name:<input id="requestNHLPlayerFirst" type="text"></input>
      Last Name:<input id="requestNHLPlayerLast" type="text"></input>
      <input id="requestNHLPlayer" type="button" value="RequestNHLPlayer" />
+     <input id="requestNHLPlayerStats" type="button" value="RequestNHLPlayerStats" />
    </div>
    <div id="requestNBAPlayerD">
     First Name:<input id="requestNBAPlayerFirst" type="text"></input>
     Last Name:<input id="requestNBAPlayerLast" type="text"></input>
     <input id="requestNBAPlayer" type="button" value="RequestNBAPlayer" />
+      <input id="requestNBAPlayerStats" type="button" value="RequestNBAPlayerStats" />
   </div>
 
   <table id='sports' style='border:2px solid black'>
@@ -68,7 +70,6 @@
 
           console.log(data.info);
 
-
           $("#playerStats").append("<tr><td>Firstname</td>"  +
                               "<td>Lastname</td>" +
                               "<td>Height</td>"+
@@ -81,6 +82,25 @@
                                "<td>" + data.info.player.Age + "</td>"+
                                "<td>" + data.info.team.Name + "</td>" +
                                "<td>" + data.info.player.Position + "</td></tr>");
+           }
+      }
+      function requestPlayerStatsSuccess(data) {
+        if(!data.info)
+          alert("PLAYER DOES NOT EXIST");
+          else{
+
+          $("#sports").empty();
+          $("#playerStats").empty();
+
+          console.log(data.info);
+          console.log(data.info.stats.Pts);
+
+          $("#playerStats").append("<tr><td>Firstname</td>"  +
+                              "<td>Team</td>"+
+                              "<td>Points</td></tr>");
+           $("#playerStats").append("<tr><td>" + data.info.player.FirstName + "</td>"  +
+                               "<td>" + data.info.team.Name + "</td>" +
+                               "<td>" + data.info.stats.Pts + "</td></tr>");
            }
       }
       function requestTeamSuccess(data) {
@@ -133,6 +153,22 @@
            requestPlayerSuccess);
        return false;
      }
+     function requestNBAPlayerStatsClicked(){
+//send an HTTP get request and get a result back.
+    $.get("/requestNBAStats/name",
+          {firstname:$("#requestNBAPlayerFirst").val(),
+          lastname:$('#requestNBAPlayerLast').val()},
+          requestPlayerStatsSuccess);
+      return false;
+    }
+    function requestNHLPlayerStatsClicked(){
+//send an HTTP get request and get a result back.
+   $.get("/requestNHLStats/name",
+         {firstname:$("#requestNHLPlayerFirst").val(),
+         lastname:$('#requestNHLPlayerLast').val()},
+         requestPlayerStatsSuccess);
+     return false;
+   }
 
      function requestNBATeamClicked(){
 //send an HTTP get request and get a result back.
@@ -190,6 +226,10 @@
               return false;
             }
         });
+        /////////////////////////////////////////////////////////////////
+        $("#requestNHLPlayerStats").click(requestNHLPlayerStatsClicked);
+        ////////////////////////////////////////////////////////////
+        $("#requestNBAPlayerStats").click(requestNBAPlayerStatsClicked);
 
       });
 
