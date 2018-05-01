@@ -11,11 +11,7 @@
   </head>
 
   <body>
-    <div id="requestNHLD">
-      <input id="requestNHL" type="button" value="NHL Team Rankings:" />
-        Team Name:<input id="requestNHlPlayersTeam" type="text"></input>
-      <input id="requestNHLPlayersByTeam" type="button" value="NHL Players By Team:" />
-    </div>
+   
 
    <div id="requestNBAD">
       <input id="requestNBA" type="button" value="NBA Team Rankings" />
@@ -24,12 +20,7 @@
     </div>
 
 
-    <div id="requestNHLPlayerD">
-     First Name:<input id="requestNHLPlayerFirst" type="text"></input>
-     Last Name:<input id="requestNHLPlayerLast" type="text"></input>
-     <input id="requestNHLPlayer" type="button" value="RequestNHLPlayer" />
-     <input id="requestNHLPlayerStats" type="button" value="RequestNHLPlayerStats" />
-   </div>
+
    <div id="requestNBAPlayerD">
     First Name:<input id="requestNBAPlayerFirst" type="text"></input>
     Last Name:<input id="requestNBAPlayerLast" type="text"></input>
@@ -125,11 +116,6 @@
 
       }
 
-      function requestClicked(){
-//send an HTTP get request and get a result back.
-      $.get("/requestNHL", success);
-        return false;
-      }
 
        function requestNBAClicked(){
 //send an HTTP get request and get a result back.
@@ -145,14 +131,7 @@
             requestPlayerSuccess);
         return false;
       }
-      function requestNHLPlayerClicked(){
-//send an HTTP get request and get a result back.
-     $.get("/requestNHL/name",
-           {firstname:$("#requestNHLPlayerFirst").val(),
-           lastname:$('#requestNHLPlayerLast').val()},
-           requestPlayerSuccess);
-       return false;
-     }
+    
      function requestNBAPlayerStatsClicked(){
 //send an HTTP get request and get a result back.
     $.get("/requestNBAStats/name",
@@ -161,15 +140,7 @@
           requestPlayerStatsSuccess);
       return false;
     }
-    function requestNHLPlayerStatsClicked(){
-//send an HTTP get request and get a result back.
-   $.get("/requestNHLStats/name",
-         {firstname:$("#requestNHLPlayerFirst").val(),
-         lastname:$('#requestNHLPlayerLast').val()},
-         requestPlayerStatsSuccess);
-     return false;
-   }
-
+  
      function requestNBATeamClicked(){
 //send an HTTP get request and get a result back.
     $.get("/requestNBATeam/name" ,
@@ -177,28 +148,14 @@
            requestTeamSuccess);
       return false;
     }
-    function requestNHLTeamClicked(){
-//send an HTTP get request and get a result back.
-   $.get("/requestNHLTeam/name" ,
-         {teamname:$("#requestNHlPlayersTeam").val()},
-          requestTeamSuccess);
-     return false;
-   }
-
+  
 
       $(document).ready(function(){
-        $("#requestNHL").click(requestClicked);
+       
         /////////////////////////////////////////////////////////////////////
         $("#requestNBA").click(requestNBAClicked);
         //////////////////////////////////////////////////////////////////////
-        $("#requestNHLPlayersByTeam").click(requestNHLTeamClicked);
-        $("#requestNHlPlayersTeam").keydown( function( event ) {
-            if ( event.which === 13 ) {
-              requestNHLTeamClicked();
-              event.preventDefault();
-              return false;
-            }
-        });
+      
         //////////////////////////////////////////////////////////////////////
         $("#requestNBAPlayersByTeam").click(requestNBATeamClicked);
         $("#requestNBAPlayersTeam").keydown( function( event ) {
@@ -209,14 +166,7 @@
             }
         });
         /////////////////////////////////////////////////////////////////
-        $("#requestNHLPlayer").click(requestNHLPlayerClicked);
-        $("#requestNHLPlayerLast").keydown( function( event ) {
-            if ( event.which === 13 ) {
-              requestNHLPlayerClicked();
-              event.preventDefault();
-              return false;
-            }
-        });
+       
         ////////////////////////////////////////////////////////////
         $("#requestNBAPlayer").click(requestNBAPlayerClicked);
         $("#requestNBAPlayerLast").keydown( function( event ) {
@@ -227,7 +177,7 @@
             }
         });
         /////////////////////////////////////////////////////////////////
-        $("#requestNHLPlayerStats").click(requestNHLPlayerStatsClicked);
+     
         ////////////////////////////////////////////////////////////
         $("#requestNBAPlayerStats").click(requestNBAPlayerStatsClicked);
 
